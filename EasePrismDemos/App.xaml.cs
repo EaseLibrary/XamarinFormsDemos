@@ -8,8 +8,6 @@ namespace EasePrismDemos
 	{
 		public App()
 		{
-			InitializeComponent();
-
 			MainPage = new MainPage();
 		}
 

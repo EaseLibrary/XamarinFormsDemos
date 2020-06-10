@@ -13,9 +13,5 @@ namespace EasePrismDemos
 	[DesignTimeVisible(true)]
 	public partial class MainPage : ContentPage
 	{
-		public MainPage()
-		{
-			InitializeComponent();
-		}
 	}
 }

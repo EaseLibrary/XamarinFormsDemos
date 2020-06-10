@@ -20,37 +20,33 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task IProductRepositoryGetProductIsCalledOnNavigation()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New, 
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			GetMock<IProductRepository>().Verify(m => m.GetProduct(1), Times.Once);
 		}
 
 		[Test]
 		public async Task ProductIsLoadedFromRepositoryOnNavigatedTo()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			Assert.IsNotNull(vm.Product);
 		}
 
 		[Test]
 		public async Task NavigationServiceGoBackIsCalledFromReturnToProductPageCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			vm.ReturnToProductsPageCommand.Execute();
-			VerifyNavigationGoBackAsync(Times.Once);
+			VerifyNavigationGoBack(Times.Once);
 		}
 
 		[Test]
 		public async Task AddToCartCommandCannotBeExecutedWithoutQuantity()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			vm.Quantity = 0;
 			var actual = vm.AddToCartCommand.CanExecute();
 			Assert.AreEqual(false, actual);
@@ -59,9 +55,8 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task AddToCartCommandCanBeExecutedWithQuantity()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			vm.Quantity = 1;
 			var actual = vm.AddToCartCommand.CanExecute();
 			Assert.AreEqual(true, actual);
@@ -70,9 +65,8 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task AddToCartCommandCallsCartRepositoryUpdateProduct()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			vm.Quantity = 1;
 			vm.AddToCartCommand.Execute();
 			ValidateMock<ICartRepository>(mock => 
@@ -82,9 +76,8 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task AddToCartCommandCallsCartRepositoryUpdateProductWithProductId()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			var productId = vm.Product.Id;
 			vm.Quantity = 1;
 			vm.AddToCartCommand.Execute();
@@ -95,9 +88,8 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task AddToCartCommandCallsCartRepositoryUpdateProductWithQuantity()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 			var productId = vm.Product.Id;
 			vm.Quantity = 10;
 			vm.AddToCartCommand.Execute();
@@ -114,9 +106,8 @@ namespace EasePrismDemos.Tests.ViewModels
 					.Returns<CartProduct>(request => Task.FromResult<CartProduct>(null));
 			};
 
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 
 			vm.Quantity = 10;
 			vm.AddToCartCommand.Execute();
@@ -131,9 +122,8 @@ namespace EasePrismDemos.Tests.ViewModels
 		public async Task DialogServiceDislayAlertAsyncIsNotCalledWhenCartRepositoryUpdateProductSucceedsOnToCartCommand()
 		{
 
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductDetailPageViewModel>(
-				NavigationMode.New,
-				new KeyValuePair<string, object>("productId", 1));
+			var vm = await ResolveAndCallInitializeAsync<ProductDetailPageViewModel>(
+				new NavigationParameters() {{"productId", 1}});
 
 			vm.Quantity = 10;
 			vm.AddToCartCommand.Execute();

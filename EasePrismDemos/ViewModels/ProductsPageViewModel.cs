@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasePrismDemos.ViewModels
 {
-	public class ProductsPageViewModel : ViewModelBase
+	public class ProductsPageViewModel : ViewModelBase, INavigatedAware
 	{
 		private IProductRepository ProductRepository { get; }
 
@@ -32,12 +32,22 @@ namespace EasePrismDemos.ViewModels
 			ProductRepository = productRepository;
 		}
 
-		public override async Task OnNavigatedToAsync(INavigationParameters parameters)
+		public override async Task InitializeAsync(INavigationParameters parameters)
 		{			
 			if (parameters.GetNavigationMode() == NavigationMode.Back) return;
 
 			var repoProducts = await ProductRepository.GetProducts();
 			Products = new ObservableCollection<ProductSummary>(repoProducts);			
+		}
+
+		public void OnNavigatedTo(INavigationParameters parameters)
+		{
+			InitializeAsync(parameters).Wait();
+		}
+
+		public void OnNavigatedFrom(INavigationParameters parameters)
+		{
+			
 		}
 	}
 }

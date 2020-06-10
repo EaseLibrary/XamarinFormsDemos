@@ -49,7 +49,7 @@ namespace EasePrismDemos.ViewModels
 			PageDialogService = pageDialogService;
 		}
 
-		public override async Task OnNavigatedToAsync(INavigationParameters parameters)
+		public override async Task InitializeAsync(INavigationParameters parameters)
 		{
 			var id = parameters.GetValue<int>("productId");
 			var repoProduct = await ProductRepository.GetProduct(id);

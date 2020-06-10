@@ -20,14 +20,14 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task ICartRepositoryGetProductsIsCalledOnNavigation()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 			GetMock<ICartRepository>().Verify(m => m.GetProducts(), Times.Once);
 		}
 
 		[Test]
 		public async Task CartProductsIsPopulatedFromRepoOnNavigation()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			Assert.IsNotEmpty(vm.CartProducts);
 		}
@@ -35,7 +35,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task ICartRepositoryUpdateProductsIsCalledForEachCartProductOnUpdateCartCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			vm.UpdateCartCommand.Execute();
 
@@ -45,7 +45,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task ICartRepositoryUpdateProductIsCalledForCartProductOnRemoveCartProductCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			var cartitem = vm.CartProducts.First();
 			vm.RemoveCartProductCommand.Execute(cartitem);
@@ -56,7 +56,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task ICartRepositoryUpdateProductIsCalledWithZeroQuantityOnRemoveCartProductCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			var cartitem = vm.CartProducts.First();
 			vm.RemoveCartProductCommand.Execute(cartitem);
@@ -67,7 +67,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task CartProductIsRemovedFromCartProductsOnRemoveCartProductCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			var cartitem = vm.CartProducts.First();
 			vm.RemoveCartProductCommand.Execute(cartitem);
@@ -78,7 +78,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task CartProductsIsEmptyAfterClearCartProductCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			vm.ClearCartCommand.Execute();
 
@@ -88,7 +88,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task AlertDialogIsNotDisplayedWhenValidOrderReturnsFromIOrderRepositorySubmitOrder()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			vm.SubmitOrderFromCartCommand.Execute();
 
@@ -107,7 +107,7 @@ namespace EasePrismDemos.Tests.ViewModels
 					.Returns<OrderProductRequest[]>(request => Task.FromResult<Order>(null));
 			};
 
-			var vm = await ResolveAndCallOnNavigatedToAsync<CartPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<CartPageViewModel>();
 
 			vm.SubmitOrderFromCartCommand.Execute();
 

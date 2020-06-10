@@ -18,43 +18,44 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task IProductRepositoryGetProductsIsCalledOnNavigationWhenModeIsNew()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<ProductsPageViewModel>();
 			GetMock<IProductRepository>().Verify(m => m.GetProducts(), Times.Once);
 		}
 
 		[Test]
 		public async Task IProductRepositoryGetProductsIsCalledOnNavigationWhenModeIsForward()
 		{
-			var vm = ResolveType<ProductsPageViewModel>();
-			await vm.OnNavigatedToAsync(CreateNavigationParameters(NavigationMode.Forward));
+			//var vm = ResolveType<ProductsPageViewModel>();
+			//await vm.OnNavigatedToAsync(CreateNavigationParameters(NavigationMode.Forward, null));
+			var vm = ResolveAndCallOnNavigatedTo<ProductsPageViewModel>(NavigationMode.Forward, null);
 			GetMock<IProductRepository>().Verify(m => m.GetProducts(), Times.Once);
 		}
 
 		[Test]
 		public async Task IProductRepositoryGetProductsIsCalledOnNavigationWhenModeIsRefresh()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.Refresh);
+			var vm = ResolveAndCallOnNavigatedTo<ProductsPageViewModel>(NavigationMode.Refresh, null);
 			GetMock<IProductRepository>().Verify(m => m.GetProducts(), Times.Once);
 		}
 
 		[Test]
 		public async Task IProductRepositoryGetProductsIsNotCalledOnNavigationWhenModeIsBack()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.Back);
+			var vm = ResolveAndCallOnNavigatedTo<ProductsPageViewModel>(NavigationMode.Back, null);
 			GetMock<IProductRepository>().Verify(m => m.GetProducts(), Times.Never);
 		}
 
 		[Test]
 		public async Task ProductsAreLoadedFromRepositoryOnNavigatedTo()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<ProductsPageViewModel>();
 			Assert.IsNotEmpty(vm.Products);
 		}
 		
 		[Test]
 		public async Task ProductDetailPageIsNavigatedToOnViewProductDetailsCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<ProductsPageViewModel>();
 			var firstProduct = vm.Products.First();
 			vm.ViewProductDetailsCommand.Execute(firstProduct);
 			VerifyNavigation("ProductDetailPage", p => true, Times.Once);
@@ -63,7 +64,7 @@ namespace EasePrismDemos.Tests.ViewModels
 		[Test]
 		public async Task ProductDetailPageIsNavigatedToWithProductIdOnViewProductDetailsCommandExecute()
 		{
-			var vm = await ResolveAndCallOnNavigatedToAsync<ProductsPageViewModel>(NavigationMode.New);
+			var vm = await ResolveAndCallInitializeAsync<ProductsPageViewModel>();
 			var firstProduct = vm.Products.First();
 			vm.ViewProductDetailsCommand.Execute(firstProduct);
 			VerifyNavigation(

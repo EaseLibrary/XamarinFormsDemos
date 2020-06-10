@@ -74,7 +74,7 @@ namespace EasePrismDemos.ViewModels
 			}
 		}
 
-		public override async Task OnNavigatedToAsync(INavigationParameters parameters)
+		public override async Task InitializeAsync(INavigationParameters parameters)
 		{
 			if (parameters.GetNavigationMode() == NavigationMode.Back) return;
 
